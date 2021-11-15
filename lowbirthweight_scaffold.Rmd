@@ -1,0 +1,143 @@
+---
+title: "Investigating the Factors Affecting Birthweight"
+author: "Bryan Mannix"
+date: "`r format(Sys.time(), '%d %B, %Y')`"
+output: word_document
+---
+
+
+# Question of Interest 
+
+Are the factors of smoking, previous history of hypertension or urinary irritability associated with whether babies were born with low birthweight (less than 2,500 grams)?
+
+## Load the Libraries and Data Needed
+
+The dataset we need is available in the 'aplore3' package and we will use the 'tidyverse' package. These may not be installed. If you need to install them then run following code in 'R'. You will only need to do this once.
+
+```{r, eval = FALSE}
+install.packages(c("tidyverse", "aplore3"), 
+                 repos = "https://cran.microsoft.com/")
+```
+
+Load the required libraries and make the birthweight data available ('lowbwt') as follows:   
+
+```{r, message = FALSE, warning = FALSE}
+library(tidyverse)
+library(aplore3)
+
+data(lowbwt)
+```
+
+The low birthweight data is from the "Applied Logistic Regression" textbook by Hosmer and Lemeshow. The following is a description of the variables in this dataset.
+
+|Name|	Description|
+|:------|:------------------------------------------------------------------------|
+|subject| identification code|
+|low |low birthweight ("< 2500 g" or ">= 2500 g")|
+|age |age of mother|
+|lwt|weight at last menstrual period (pounds)|
+|race |race (Black, White, Other)|
+|smoke |smoked during pregnancy (Yes, No)|
+|ptl |premature labour history (None, One, Two, etc.)|
+|ht |history of hypertension (Yes, No)|
+|ui |uterine irritability  (Yes, No)|
+|ftv |number of visits to physician during 1st trimester (None, One, Two, etc.)|
+|bwt |birthweight (in grams)|
+
+## Subjective Impressions
+
+The key variable of interest is 'low' which represents whether a baby is born with low birthweight, defined as a birthweight below 2,500 grams.
+
+```{r}
+lowbwt %>% select(low) %>% table()
+```
+
+Let's explore the association between history of hypertension and low birthweight by tabulating the data.
+
+```{r}
+lowbwt %>% select(low, ht) %>% table()
+```
+It seems there were not many mothers with hypertension, but the proportions of low weight babies is very much higher for mothers suffering from hypertension status than those that were not.
+
+```{r}
+lowbwt %>% select(low, ht) %>% table() %>% prop.table(margin = 2)
+```
+
+Task: In the following 'R' chunk explore the association between uterine irritability and whether the babies were born with low birthweight, using both the counts and appropriate percentages. Explain the results in words.
+
+```{r}
+lowbwt %>% select(low, ui) %>% table()
+
+lowbwt %>% select(low, ui) %>% table() %>% prop.table(margin = 2)
+```
+
+There were more mothers without uterine irritability than mothers with uterine irritability, however, the proportion of low weight babies is very much higher for mothers with uterine irritability.
+
+
+Task: In the following 'R' chunk explore the association between smoking status and whether the babies were born with low birthweight, using both the counts and appropriate percentages. Explain the results in words.
+
+```{r}
+lowbwt %>% select(low, smoke) %>% table()
+
+lowbwt %>% select(low, smoke) %>% table() %>% prop.table(margin = 2)
+```
+
+The proportion of low weight babies is a lot higher for mothers who smoke during pregnancy (40.54%) than for mothers who don't smoke during pregnancy (25.22%).
+
+Now we will create some barcharts.
+
+# Barchart of Low Birthweight
+
+The following is a barchart of the low birthweight status.
+
+```{r}
+ggplot(lowbwt, aes(x = low, fill = low)) +
+  geom_bar()
+```
+
+Task: In the following R chunk create a bar chart of the smoking status.
+
+```{r}
+ggplot(lowbwt, aes(x = smoke, fill = smoke)) +
+  geom_bar()
+```
+
+# Barchart of Low Birthweight by Hypertension Status
+
+Below is a barchart of the low birthweight of the babies against the hypertension status of the mothers.
+
+```{r}
+ggplot(lowbwt, aes(x = ht)) +
+     geom_bar(aes(fill = low), position = "fill") +
+     ylab("Proportion")
+```
+
+
+Task: Create a stacked barchart of low birthweight by smoking status by inserting the code in an R chunk below.
+
+```{r}
+ggplot(lowbwt, aes(x = smoke)) +
+     geom_bar(aes(fill = low), position = "fill") +
+     ylab("Proportion")
+```
+
+
+Task: Create a stacked barchart of low birthweight by uterine irritability by inserting the code in an R chunk below.
+
+```{r}
+ggplot(lowbwt, aes(x = ui)) +
+     geom_bar(aes(fill = low), position = "fill") +
+     ylab("Proportion")
+```
+
+Task: Once you have created the plot write your interpretation of which factors are associated with low birthweight based on the three barcharts.
+
+Based on the three barcharts, it seems that all three factors (history of hypertension, smoking during pregnancy, and presence of uterine irritability) are associated with low birthweight because the proportion of low birthweight babies is higher for mothers with hypertension, mothers with uterine irritability, and mothers smoking during pregnancy.
+
+# Conclusion
+
+Task: Write a short conclusion of whether you think low birthweight of babies can be predicted based on whether the mother smoke, has hypternsion or uterine irritability.
+
+I think low birthweight babies can be predicted based on whether the mother smokes, has hypertension, or has uterine irritability because the data shows that the probability of low birthweight baby is higher for mothers who smoke during pregnancy, have hypertension, or have uterine irritability.
+
+Final Task: "knit" the file as a Word of PDF document and submit it the relevant link of the course's Blackboard website before the deadline.
