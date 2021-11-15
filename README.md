@@ -1,5 +1,5 @@
 # Statistics-Assignment1
-Statistics for data science assignment using R studio.
+Statistics for data science assignment using R studio.Here is the knitted version of the RMD file.
 ![Screenshot (76)](https://user-images.githubusercontent.com/84920516/141868904-10e8a6b4-30f3-4538-8cf6-a84d1cbf9570.png)
 ![Screenshot (77)](https://user-images.githubusercontent.com/84920516/141868913-852dc51b-e7e0-4f4b-8e63-fb895e76d53a.png)
 ![Screenshot (78)](https://user-images.githubusercontent.com/84920516/141868932-20bb55ee-52ae-42b8-a259-aa9a36f727ee.png)
